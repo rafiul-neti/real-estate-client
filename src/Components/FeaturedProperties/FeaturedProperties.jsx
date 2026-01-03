@@ -3,24 +3,16 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import AnimatedDiv from "../AnimatedComponents/AnimatedDiv";
-import AnimatedTitles from "../AnimatedComponents/AnimatedTitles";
+import AboveHeading from "../Shared/AboveHeading";
+import Heading from "../Shared/Heading";
 
 const FeaturedProperties = ({ properties = [] }) => {
   const swiperRef = useRef(null);
   return (
     <section className="my-20">
-      <p className="text-center">
-        <span className="text-primary text-lg font-bold bg-blue-100 px-5 py-2.5 rounded-3xl">
-          Featured Properties
-        </span>
-      </p>
+      <AboveHeading>Featured Properties</AboveHeading>
 
-      <AnimatedTitles>
-        <h1 className="text-4xl font-bold text-center my-9">
-          Featured{" "}
-          <span className="titles-underline text-primary">Properties</span>
-        </h1>
-      </AnimatedTitles>
+      <Heading underlined={`Properties`}>Featured</Heading>
 
       <Swiper
         modules={[Autoplay]}
