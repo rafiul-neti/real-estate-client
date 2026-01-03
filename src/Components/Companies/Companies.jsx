@@ -7,10 +7,10 @@ import company4 from "../../assets/tower.png";
 const Companies = () => {
   return (
     <>
-      <img src={company1} className="w-36" alt="" />
-      <img src={company2} className="w-36" alt="" />
-      <img src={company3} className="w-36" alt="" />
-      <img src={company4} className="w-36" alt="" />
+      <img src={company1} className="w-20 lg:w-36" alt="" />
+      <img src={company2} className="w-20 lg:w-36" alt="" />
+      <img src={company3} className="w-20 lg:w-36" alt="" />
+      <img src={company4} className="w-20 lg:w-36" alt="" />
     </>
   );
 };

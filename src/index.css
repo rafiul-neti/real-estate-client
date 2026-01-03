@@ -4,7 +4,6 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-
 @layer base {
   body {
     font-family: "Lora", system-ui, -apple-system, serif;
@@ -107,11 +106,9 @@ a.active {
   @apply text-primary;
 }
 
-
 .svg-underline {
   position: relative;
   display: inline-block;
-  
 }
 
 .svg-underline::after {
@@ -136,3 +133,29 @@ a.active {
   pointer-events: none;
 }
 
+.titles-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.titles-underline::after {
+  content: "";
+  position: absolute;
+
+  /* SVG underline */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 188 25' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M27 9.99993C61.5 5.16659 138.3 0.903127 167.5 2.10313C130.333 4.10323 45.2 9.407 2 22.607C2 23.107 89 8.60344 186 8.10344' stroke='%23570df8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center bottom;
+
+  /* Positioning */
+  left: 50%;
+  bottom: -0.55em;
+  transform: translateX(-50%);
+
+  /* Size */
+  width: 110%;
+  height: 0.65em;
+
+  pointer-events: none;
+}

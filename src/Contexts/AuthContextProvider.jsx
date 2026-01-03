@@ -42,7 +42,7 @@ const AuthContextProvider = ({ children }) => {
     };
   }, []);
 
-  const signOutUser = () => {
+  const logOut = () => {
     return signOut(auth);
   };
 
@@ -58,7 +58,7 @@ const AuthContextProvider = ({ children }) => {
     createUser,
     signInUser,
     googleSignIn,
-    signOutUser,
+    logOut,
     updateUserInfo
   };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import useAxios from "../CustomHooks/useAxios";
 import PropertyCard from "../Components/PropertyCard";
 import WhyChooseUs from "../Components/WhyChooseUs";
@@ -8,15 +8,19 @@ import BuySellRent from "../Components/BuySellRent";
 import BannerSlider from "../Components/BannerSlider";
 import Stats from "../Components/Stats/Stats";
 import Companies from "../Components/Companies/Companies";
+import FeaturedProperties from "../Components/FeaturedProperties/FeaturedProperties";
+import { useQuery } from "@tanstack/react-query";
 
 const Home = () => {
   const axiosInstance = useAxios();
-  const [properties, setProperties] = useState([]);
-  useEffect(() => {
-    axiosInstance.get("/latest-properties").then((data) => {
-      setProperties(data.data);
-    });
-  }, [axiosInstance]);
+
+  const { data: properties = [] } = useQuery({
+    queryKey: ["latest-properties"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/latest-properties");
+      return res.data;
+    },
+  });
 
   return (
     <>
@@ -28,9 +32,11 @@ const Home = () => {
         <Stats />
       </section>
 
-      <section className="mt-10 w-full p-3 lg:p-0 lg:w-10/12 lg:mx-auto flex justify-around">
+      <section className="mt-7 lg:mt-10 w-full p-3 lg:p-0 lg:w-10/12 lg:mx-auto flex justify-around">
         <Companies />
       </section>
+
+      <FeaturedProperties properties={properties} />
 
       <section className="container mx-auto p-2 md:p-0">
         <BuySellRent />
@@ -45,7 +51,7 @@ const Home = () => {
           apartments to commercial spaces, all freshly added and ready to
           explore.
         </p>
-        <div className="p-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-12">
+        <div className="p-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {properties.map((property) => (
             <PropertyCard key={property._id} property={property} />
           ))}

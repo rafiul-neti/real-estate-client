@@ -10,7 +10,7 @@ import Button from "./AnimatedComponents/Button";
 const Navbar = () => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "acid");
   useTheme(theme);
-  const { user, signOutUser } = use(AuthContext);
+  const { user, logOut } = use(AuthContext);
 
   const links = (
     <>
@@ -55,7 +55,7 @@ const Navbar = () => {
   );
 
   const handleSignOut = () => {
-    signOutUser()
+    logOut()
       .then(() => {
         Swal.fire({
           title: "Log Out Successfull!",
