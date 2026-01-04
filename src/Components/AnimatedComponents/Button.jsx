@@ -16,7 +16,7 @@ const Button = ({
       className={`btn btn-primary ${className}`}
       onClick={onClick}
     >
-      {children}
+     {children}
     </motion.button>
   );
 };

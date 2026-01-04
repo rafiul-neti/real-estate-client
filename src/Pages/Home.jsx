@@ -11,6 +11,7 @@ import Companies from "../Components/Companies/Companies";
 import FeaturedProperties from "../Components/FeaturedProperties/FeaturedProperties";
 import { useQuery } from "@tanstack/react-query";
 import WhyUs from "../Components/WhyChooseUs/WhyUs";
+import LatestProperties from "../Components/LatestProperties/LatestProperties";
 
 const Home = () => {
   const axiosInstance = useAxios();
@@ -41,6 +42,8 @@ const Home = () => {
 
       <WhyUs />
 
+      <LatestProperties />
+
       <section className="container mx-auto p-2 md:p-0">
         <BuySellRent />
       </section>
@@ -61,9 +64,9 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="my-18 p-3 lg:p-10 why-choose text-base-200">
+      {/* <section className="my-18 p-3 lg:p-10 why-choose text-base-200">
         <WhyChooseUs />
-      </section>
+      </section> */}
 
       <section className="w-11/12 lg:w-[96%] mx-auto">
         <MeetOurAgents />
