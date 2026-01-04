@@ -4,7 +4,7 @@ import AnimatedTitles from "../AnimatedComponents/AnimatedTitles";
 const Heading = ({ children, underlined }) => {
   return (
     <AnimatedTitles>
-      <h1 className="text-4xl font-bold text-center my-9">
+      <h1 className="text-4xl font-bold text-center mt-7 mb-9">
         {children}{" "}
         <span className="titles-underline text-primary">{underlined}</span>
       </h1>

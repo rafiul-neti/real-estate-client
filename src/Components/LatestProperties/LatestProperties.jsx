@@ -17,7 +17,7 @@ const LatestProperties = () => {
     },
   });
 
-  console.log(featuredProperties);
+  // console.log(featuredProperties);
   return (
     <section className="mt-24 w-11/12 mx-auto">
       <AboveHeading>Latest Properties</AboveHeading>
@@ -30,7 +30,7 @@ const LatestProperties = () => {
       </div>
 
       <>
-        <div className="my-7 text-center">
+        <div className="mt-14 text-center">
           <Link to={`/all-properties`} className="btn btn-primary">
             Browse More Properties{" "}
             <div className="h-4 w-px bg-gray-300 m-0"></div> <FaArrowRight />

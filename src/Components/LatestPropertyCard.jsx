@@ -8,12 +8,12 @@ import Button from "./AnimatedComponents/Button";
 const LatestPropertyCard = ({ property }) => {
   return (
     <>
-      <div className="flex items-center gap-5 rounded overflow-hidden">
+      <div className="flex flex-col lg:flex-row lg:items-center gap-5 rounded overflow-hidden">
         <div className="flex-1">
           <img src={property.thumbnail} className="" alt="" />
         </div>
 
-        <div className="flex-2 space-y-3">
+        <div className="flex-1 lg:flex-2 space-y-3">
           <h3 className="font-bold text-3xl">{property["property-name"]}</h3>
           <p className="flex items-center gap-2">
             <FaLocationDot className="text-gray-700" /> {property.location}
@@ -32,24 +32,23 @@ const LatestPropertyCard = ({ property }) => {
           </div>
         </div>
 
-        <div className="flex-1 space-y-2.5 text-center">
+        <div className="flex-1 space-y-2.5 text-left lg:text-center">
           <h3 className="text-2xl font-bold text-blue-600">{property.price}</h3>
           <small>(incl. VAT)</small>
 
           <div className="mt-2.5 space-x-1">
-            <Button className={`bg-white text-primary border-0 outline-0`}>
+            <Button className={`bg-[#dedddb] text-primary border-0 outline-0`}>
               <IoCall /> Call
             </Button>
-            <Button className={`bg-white text-primary border-0 outline-0`}>
+            <Button className={`bg-[#dedddb] text-primary border-0 outline-0`}>
               <IoMdMail /> Email
             </Button>
-            <Button className={`bg-white text-primary border-0 outline-0`}>
+            <Button className={`bg-[#dedddb] text-primary border-0 outline-0`}>
               <IoCall /> WhatsApp
             </Button>
           </div>
         </div>
       </div>
-
     </>
   );
 };

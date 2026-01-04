@@ -5,7 +5,7 @@ import useAuth from "./useAuth";
 import toast from "react-hot-toast";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:2000",
+  baseURL: "https://homenest-server-main.vercel.app",
   withCredentials: true,
 });
 

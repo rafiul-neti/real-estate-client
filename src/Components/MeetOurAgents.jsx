@@ -1,32 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import useAxios from "../CustomHooks/useAxios";
 import AgentCard from "./AgentCard";
+import { useQuery } from "@tanstack/react-query";
+import AboveHeading from "./Shared/AboveHeading";
+import Heading from "./Shared/Heading";
 
 const MeetOurAgents = () => {
-  const [agents, setAgents] = useState([]);
   const axiosInstance = useAxios();
-  useEffect(() => {
-    axiosInstance.get("/agents").then((data) => {
-      setAgents(data.data);
-    });
-  }, [axiosInstance]);
+
+  const { data: agents = [] } = useQuery({
+    queryKey: ["agents"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/agents");
+      return res.data;
+    },
+  });
 
   return (
-    <div className="">
-      <h1 className="text-center mt-5 text-h1">
-        Meet <span className="text-primary">Our Agents</span>
-      </h1>
-      <p className="mb-5 text-body text-center text-gray-600">
-        Connect with our experienced real estate professionals dedicated to
-        finding your perfect property.
-      </p>
+    <section className="mt-20">
+      <AboveHeading>Agents</AboveHeading>
+      <Heading underlined={`Agents`}>Meet Our</Heading>
 
-      <div className="p-3 bg-neutral grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-7">
-        {agents.map((agent) => (
-          <AgentCard key={agent._id} agent={agent} />
-        ))}
-      </div>
-    </div>
+      <div className=""></div>
+    </section>
   );
 };
 

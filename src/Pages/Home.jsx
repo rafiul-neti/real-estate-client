@@ -44,26 +44,9 @@ const Home = () => {
 
       <LatestProperties />
 
-      <section className="container mx-auto p-2 md:p-0">
-        <BuySellRent />
-      </section>
+     
 
-      <section className="mt-18 container mx-auto bg-neutral pt-7">
-        <h1 className="mt-5 text-h1 text-center">
-          Recently <span className="text-primary">Listed Properties</span>
-        </h1>
-        <p className="mt-2 mb-7 text-caption text-gray-600 text-center">
-          Stay updated with the latest property listings — from modern
-          apartments to commercial spaces, all freshly added and ready to
-          explore.
-        </p>
-        <div className="p-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {properties.map((property) => (
-            <PropertyCard key={property._id} property={property} />
-          ))}
-        </div>
-      </section>
-
+     
       {/* <section className="my-18 p-3 lg:p-10 why-choose text-base-200">
         <WhyChooseUs />
       </section> */}
