@@ -6,10 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 import LatestPropertyCard from "../LatestPropertyCard";
 import { Link } from "react-router";
 import { FaArrowRight } from "react-icons/fa";
+import { LatestPropertyCardSkeleton, SectionSkeleton } from "../Shared";
 
 const LatestProperties = () => {
   const axiosInstance = useAxiosSecure();
-  const { data: featuredProperties = [] } = useQuery({
+  const { data: featuredProperties = [], isLoading } = useQuery({
     queryKey: ["featured-properties"],
     queryFn: async () => {
       const res = await axiosInstance.get("/featured-properties");
@@ -17,7 +18,17 @@ const LatestProperties = () => {
     },
   });
 
-  // console.log(featuredProperties);
+  if (isLoading) {
+    return (
+      <SectionSkeleton className="mt-24 w-11/12 mx-auto">
+        <div className="grid grid-cols-1 gap-7">
+          {Array.from({ length: 3 }, (_, index) => (
+            <LatestPropertyCardSkeleton key={index} />
+          ))}
+        </div>
+      </SectionSkeleton>
+    );
+  }
   return (
     <section className="mt-24 w-11/12 mx-auto">
       <AboveHeading>Latest Properties</AboveHeading>

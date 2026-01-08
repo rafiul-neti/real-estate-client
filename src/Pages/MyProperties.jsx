@@ -3,6 +3,7 @@ import { AuthContext } from "../Contexts/AuthContext";
 import useAxios from "../CustomHooks/useAxios";
 import MyPropertiesCard from "../Components/MyPropertiesCard";
 import Swal from "sweetalert2";
+import { LoadingSpinner } from "../Components/Shared";
 
 const MyProperties = () => {
   const { user } = use(AuthContext);
@@ -23,12 +24,9 @@ const MyProperties = () => {
     }, 700);
   }, [axiosInstance, user.email]);
 
-  if (loading)
-    return (
-      <div className="flex justify-center items-center text-primary min-h-screen">
-        <span className="loading loading-spinner loading-xl"></span>
-      </div>
-    );
+  if (loading) {
+    return <LoadingSpinner fullScreen message="Loading your properties..." />;
+  }
 
   const removeAfterDeleting = (id) => {
     Swal.fire({

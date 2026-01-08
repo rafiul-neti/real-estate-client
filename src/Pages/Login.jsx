@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import { FaCircleArrowRight } from "react-icons/fa6";
 import { FiUserPlus } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router";
@@ -6,17 +6,21 @@ import { AuthContext } from "../Contexts/AuthContext";
 import useAxios from "../CustomHooks/useAxios";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import { ButtonLoader } from "../Components/Shared";
 
 const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { googleSignIn, signInUser, setLoading, setUser } = use(AuthContext);
   const axiosInstance = useAxios();
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const handleLogin = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
 
+    setLoginLoading(true);
     signInUser(email, password)
       .then((result) => {
         setUser(result.user);
@@ -28,19 +32,21 @@ const Login = () => {
         });
 
         setLoading(false);
-
         navigate(location.state || "/");
-
         e.target.reset();
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => {
+        console.log(err.message);
+        toast.error("Login failed. Please check your credentials.");
+      })
+      .finally(() => setLoginLoading(false));
   };
 
   const handleGoogleSignIn = () => {
+    setGoogleLoading(true);
     googleSignIn()
       .then((result) => {
         const user = result.user;
-
         setUser(user);
 
         const userInfo = {
@@ -61,46 +67,53 @@ const Login = () => {
         setLoading(false);
         navigate(location.state || "/");
       })
-      .catch((err) => toast.error(err.message));
+      .catch((err) => toast.error(err.message))
+      .finally(() => setGoogleLoading(false));
   };
 
   return (
-    <section className="bg-neutral min-h-screen flex flex-col items-center justify-center">
-      <div className="container mx-auto perspective-distant flex">
-        <div className="flex-1 bg-white p-5 rounded-tl-xl rounded-bl-xl">
+    <section className="min-h-screen bg-blue-50 flex flex-col items-center justify-center">
+      <div className="container mx-auto p-5 lg:p-0 perspective-distant lg:flex">
+        <div className="lg:flex-1 bg-white p-5 rounded-tl-xl rounded-bl-xl">
           <h2 className="my-8 text-center text-h1">Login Here</h2>
           <form onSubmit={handleLogin} className="text-center space-y-6">
             <input
               type="email"
               name="email"
-              className="input w-full border-0 bg-neutral"
+              className="input bg-amber-50 w-full border-0"
               placeholder="Enter Your Email"
             />
             <input
               type="password"
               name="password"
-              className="input w-full border-0 bg-neutral"
+              className="input bg-amber-50 w-full border-0"
               placeholder="Enter Your Password"
             />
             <div className="text-sm flex items-center justify-between ">
-              <div className="">
+              <div className="space-x-1">
                 <input type="checkbox" name="" id="" />
                 <span>Remember Me</span>
               </div>
               <span>Forgot Password?</span>
             </div>
-            <button className="btn btn-primary btn-block text-base-100 outline-0">
+            <ButtonLoader
+              loading={loginLoading}
+              loadingText="Signing in..."
+              className="btn-primary btn-block text-base-100 outline-0"
+            >
               Login
-            </button>
+            </ButtonLoader>
           </form>
           <div className="flex gap-5 items-center my-5">
             <div className="inline-block w-[35%] h-px bg-base-300"></div>
-            <span className="text-sm">Or Login With</span>
+            <span className="text-sm text-nowrap">Or Login With</span>
             <div className="inline-block w-[35%] h-px bg-base-300"></div>
           </div>
-          <button
+          <ButtonLoader
             onClick={handleGoogleSignIn}
-            className="btn btn-block bg-white text-black border-[#e5e5e5]"
+            loading={googleLoading}
+            loadingText="Signing in with Google..."
+            className="btn-block bg-white text-black border-[#e5e5e5]"
           >
             <svg
               aria-label="Google logo"
@@ -130,10 +143,10 @@ const Login = () => {
               </g>
             </svg>
             Login with Google
-          </button>
+          </ButtonLoader>
         </div>
 
-        <div className="flex-1 text-base-100 text-center bg-secondary p-5 space-y-5 rounded-tr-xl rounded-br-xl">
+        <div className="hidden lg:block lg:flex-1 text-base-100 text-center bg-blue-600 p-5 space-y-5 rounded-tr-xl rounded-br-xl">
           <span className="flex justify-center">
             <FiUserPlus className="text-white text-9xl" />
           </span>

@@ -1,5 +1,4 @@
-import React, { use, useState } from "react";
-import { useTheme } from "../CustomHooks/useTheme";
+import React, { use } from "react";
 import { AuthContext } from "../Contexts/AuthContext";
 import { Link, NavLink } from "react-router";
 import { FaUser } from "react-icons/fa";
@@ -8,21 +7,19 @@ import Swal from "sweetalert2";
 import Button from "./AnimatedComponents/Button";
 
 const Navbar = () => {
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "acid");
-  useTheme(theme);
   const { user, logOut } = use(AuthContext);
 
   const links = (
     <>
       <li>
-        <NavLink to={`/`} className={`font-semibold text-lg tracking-wide`}>
+        <NavLink to={`/`} className={`font-semibold text-base tracking-wide`}>
           Home
         </NavLink>
       </li>
       <li>
         <NavLink
           to={`/all-properties`}
-          className={`font-semibold text-lg tracking-wide`}
+          className={`font-semibold text-base tracking-wide`}
         >
           All Properties
         </NavLink>
@@ -30,7 +27,7 @@ const Navbar = () => {
       <li>
         <NavLink
           to={`/add-property`}
-          className={`font-semibold text-lg tracking-wide`}
+          className={`font-semibold text-base tracking-wide`}
         >
           Add Properties
         </NavLink>
@@ -38,7 +35,7 @@ const Navbar = () => {
       <li>
         <NavLink
           to={`/my-properties`}
-          className={`font-semibold text-lg tracking-wide`}
+          className={`font-semibold text-base  tracking-wide`}
         >
           My Properties
         </NavLink>
@@ -46,9 +43,17 @@ const Navbar = () => {
       <li>
         <NavLink
           to={`/my-ratings`}
-          className={`font-semibold text-lg tracking-wide`}
+          className={`font-semibold text-base tracking-wide`}
         >
           My Ratings
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={`/agents`}
+          className={`font-semibold text-base tracking-wide`}
+        >
+          Agents
         </NavLink>
       </li>
     </>
@@ -67,7 +72,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="px-1 sm:px-4 md:px-8 sticky top-0 w-full z-50 bg-gray-200 py-3">
+    <div className="px-1 sm:px-4 md:px-8 sticky top-0 w-full z-50 bg-gray-200/80 py-3">
       <div className="navbar">
         <div className="navbar-start">
           <div className="dropdown">
@@ -124,19 +129,6 @@ const Navbar = () => {
                   <li className="text-sm font-bold">{user.displayName}</li>
                   <li className="text-xs">{user.email}</li>
                 </div>
-                <label className="my-2 flex items-center gap-2 cursor-pointer text-base-content">
-                  <span className="text-sm">
-                    {theme === "acid" ? "🌙 Dark" : "☀️ Light"}
-                  </span>
-                  <input
-                    type="checkbox"
-                    className="toggle toggle-primary"
-                    onChange={(e) =>
-                      setTheme(e.target.checked ? "dark" : "acid")
-                    }
-                    checked={theme === "dark"}
-                  />
-                </label>
                 <li>
                   <Button
                     onClick={handleSignOut}

@@ -5,7 +5,7 @@ import { MdLocationPin, MdMail } from "react-icons/md";
 const Footer = () => {
   return (
     <>
-      <footer className="mt-20 footer sm:footer-horizontal bg-neutral text-base-content p-10">
+      <footer className="mt-20 footer sm:footer-horizontal bg-blue-50 text-base-content p-10">
         <div className="">
           <h1 className="text-h1">
             Home<span className="text-primary">Nest.</span>

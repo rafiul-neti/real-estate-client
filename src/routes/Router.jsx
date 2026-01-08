@@ -9,6 +9,8 @@ import AllProperties from "../Pages/AllProperties";
 import AddProperty from "../Pages/AddProperty";
 import MyProperties from "../Pages/MyProperties";
 import MyRatings from "../Pages/MyRatings";
+import Agents from "../Pages/Agents";
+import AgentDetails from "../Pages/AgentDetails";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +24,14 @@ export const router = createBrowserRouter([
       {
         path: "all-properties",
         Component: AllProperties,
+      },
+      {
+        path: "agents",
+        Component: Agents,
+      },
+      {
+        path: "agent/:id",
+        Component: AgentDetails,
       },
       {
         path: "add-property",

@@ -5,9 +5,27 @@ import "swiper/css";
 import AnimatedDiv from "../AnimatedComponents/AnimatedDiv";
 import AboveHeading from "../Shared/AboveHeading";
 import Heading from "../Shared/Heading";
+import { SectionSkeleton } from "../Shared";
 
-const FeaturedProperties = ({ properties = [] }) => {
+const FeaturedProperties = ({ properties = [], isLoading = false }) => {
   const swiperRef = useRef(null);
+
+  if (isLoading || properties.length === 0) {
+    return (
+      <SectionSkeleton className="my-20">
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+          {Array.from({ length: 4 }, (_, index) => (
+            <div key={index} className="animate-pulse">
+              <div className="h-40 bg-base-300 rounded mb-3"></div>
+              <div className="h-4 bg-base-300 rounded mb-2 w-3/4"></div>
+              <div className="h-5 bg-base-300 rounded mb-2 w-1/2"></div>
+              <div className="h-3 bg-base-300 rounded w-full"></div>
+            </div>
+          ))}
+        </div>
+      </SectionSkeleton>
+    );
+  }
   return (
     <section className="my-20">
       <AboveHeading>Featured Properties</AboveHeading>

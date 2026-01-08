@@ -6,9 +6,13 @@ import { AuthContext } from "../Contexts/AuthContext";
 import useAxios from "../CustomHooks/useAxios";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import { imageUpload } from "../Utils/image_upload";
+import { ButtonLoader, LoadingSpinner } from "../Components/Shared";
 
 const Register = () => {
   const [error, setError] = useState("");
+  const [registerLoading, setRegisterLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const navigate = useNavigate();
   const {
     loading,
@@ -20,18 +24,15 @@ const Register = () => {
   } = use(AuthContext);
   const axiosInstance = useAxios();
 
-  if (loading)
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <span className="loading loading-spinner loading-xl"></span>
-      </div>
-    );
+  if (loading) {
+    return <LoadingSpinner fullScreen message="Setting up your account..." />;
+  }
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
     const email = e.target.email.value;
-    const image = e.target.image.value;
+    const image = e.target.image.files[0];
     const password = e.target.password.value;
 
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z]).{6,}$/;
@@ -40,46 +41,51 @@ const Register = () => {
       return;
     }
 
-    createUser(email, password)
-      .then((result) => {
-        setUser(result.user);
+    setRegisterLoading(true);
+    try {
+      let imagUrl;
+      if (image) {
+        imagUrl = await imageUpload(image);
+      }
 
-        updateUserInfo({
-          displayName: name,
-          photoURL: image,
-        })
-          .then()
-          .catch((err) => toast.error(err.message));
+      const result = await createUser(email, password);
+      setUser(result.user);
 
-        const userInfo = {
-          name,
-          image,
-          email,
-        };
-
-        axiosInstance.post("/user", userInfo).then((data) => {
-          if (data.data.insertedId) {
-            Swal.fire({
-              title: "Congrats! You've Successfully Registered!",
-              icon: "success",
-              timer: 2000,
-            });
-          }
-        });
-        navigate("/");
-        setError("");
-        e.target.reset();
-      })
-      .catch((err) => {
-        toast.error(err.message);
+      await updateUserInfo({
+        displayName: name,
+        photoURL: imagUrl,
       });
+
+      const userInfo = {
+        name,
+        imagUrl,
+        email,
+      };
+
+      const data = await axiosInstance.post("/user", userInfo);
+      if (data.data.insertedId) {
+        Swal.fire({
+          title: "Congrats! You've Successfully Registered!",
+          icon: "success",
+          timer: 2000,
+        });
+      }
+
+      navigate("/");
+      setError("");
+      e.target.reset();
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setRegisterLoading(false);
+    }
   };
 
   const handleGoogleLogin = () => {
+    setGoogleLoading(true);
     googleSignIn()
       .then((result) => {
         const user = result.user;
-
         setUser(user);
 
         const userInfo = {
@@ -99,13 +105,15 @@ const Register = () => {
         });
 
         setLoading(false);
+        navigate("/");
       })
-      .catch((err) => toast.error(err.message));
+      .catch((err) => toast.error(err.message))
+      .finally(() => setGoogleLoading(false));
   };
   return (
-    <section className="bg-neutral min-h-screen flex flex-col items-center justify-center">
-      <div className="container mx-auto perspective-distant flex flex-row-reverse">
-        <div className="flex-1 bg-white p-5 rounded-tr-xl rounded-br-xl">
+    <section className="min-h-screen bg-blue-50 flex flex-col items-center justify-center">
+      <div className="container p-5 lg:p-0 mx-auto perspective-distant lg:flex lg:flex-row-reverse">
+        <div className="lg:flex-1 bg-white p-5 rounded-tr-xl rounded-br-xl">
           <h2 className={`my-8 text-center text-h1 ${error && "text-red-600"}`}>
             {error ? error : "Please Register"}
           </h2>
@@ -113,40 +121,54 @@ const Register = () => {
             <input
               type="text"
               name="name"
-              className="input w-full border-0 bg-neutral"
+              className="input bg-amber-50 w-full border-0"
               placeholder="Enter Your Name"
             />
 
             <input
               type="email"
               name="email"
-              className="input w-full border-0 bg-neutral"
+              className="input bg-amber-50 w-full border-0"
               placeholder="Enter Your Email"
             />
+
             <input
-              type="text"
+              type="file"
               name="image"
-              className="input w-full border-0 bg-neutral"
-              placeholder="ImageURL"
+              accept="image/*"
+              className="input bg-amber-50 block w-full text-sm text-gray-500
+      file:mr-4 file:py-2 file:px-4
+      file:rounded-md file:border-0
+      file:text-sm file:font-semibold
+      file:bg-lime-50 file:text-blue-500
+      hover:file:bg-blue-200/85 border border-dashed border-blue-300 rounded-md cursor-pointer
+      focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-700"
             />
+
             <input
               type="password"
               name="password"
-              className="input w-full border-0 bg-neutral"
+              className="input bg-amber-50 w-full border-0"
               placeholder="Enter Your Password"
             />
-            <button className="btn btn-primary btn-block text-base-100 outline-0">
+            <ButtonLoader
+              loading={registerLoading}
+              loadingText="Creating account..."
+              className="btn-primary btn-block text-base-100 outline-0"
+            >
               Register
-            </button>
+            </ButtonLoader>
           </form>
           <div className="flex gap-5 items-center my-5">
             <div className="inline-block w-[35%] h-px bg-base-300"></div>
-            <span className="text-sm">Or Login With</span>
+            <span className="text-sm text-nowrap">Or Login With</span>
             <div className="inline-block w-[35%] h-px bg-base-300"></div>
           </div>
-          <button
+          <ButtonLoader
             onClick={handleGoogleLogin}
-            className="btn btn-block bg-white text-black border-[#e5e5e5]"
+            loading={googleLoading}
+            loadingText="Signing up with Google..."
+            className="btn-block bg-white text-black border-[#e5e5e5]"
           >
             <svg
               aria-label="Google logo"
@@ -176,10 +198,10 @@ const Register = () => {
               </g>
             </svg>
             Login with Google
-          </button>
+          </ButtonLoader>
         </div>
 
-        <div className="flex-1 text-base-100 text-center bg-secondary p-5 space-y-5 rounded-tl-xl rounded-bl-xl">
+        <div className="hidden lg:block lg:flex-1 text-base-100 text-center bg-blue-600 p-5 space-y-5 rounded-tl-xl rounded-bl-xl">
           <span className="flex justify-center">
             <FiUserPlus className="text-white text-9xl" />
           </span>

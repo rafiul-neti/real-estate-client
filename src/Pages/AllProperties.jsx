@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import useAxios from "../CustomHooks/useAxios";
 import PropertyCard from "../Components/PropertyCard";
 import { Link } from "react-router";
+import { LoadingSpinner, PropertyCardSkeleton, GridSkeleton, ButtonLoader } from "../Components/Shared";
 
 const AllProperties = () => {
   const [loading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [sort, setSort] = useState("");
   const [properties, setProperties] = useState([]);
   const axiosInstance = useAxios();
@@ -32,17 +34,32 @@ const AllProperties = () => {
       .catch((err) => console.log(err));
   }, [axiosInstance, sort]);
 
-  if (loading)
+  if (loading) {
     return (
-      <div className="flex justify-center items-center text-primary min-h-screen">
-        <span className="loading loading-spinner loading-xl"></span>
-      </div>
+      <section className="p-5 min-h-screen bg-base-200 container mx-auto">
+        <h1 className="my-3 text-h1 text-center">
+          Explore <span className="text-primary">All Properties</span>
+        </h1>
+        <p className="text-caption text-gray-600 text-center mb-8">
+          Browse our complete collection of homes, apartments, and commercial
+          spaces — carefully curated to match every lifestyle, need, and
+          investment goal.
+        </p>
+        <GridSkeleton 
+          count={6} 
+          SkeletonComponent={PropertyCardSkeleton}
+          gridCols="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          gap="gap-5"
+        />
+      </section>
     );
+  }
 
   const handleSearch = (e) => {
     e.preventDefault();
     const searched_text = e.target.search.value;
-
+    
+    setSearchLoading(true);
     axiosInstance
       .get(`/search?search=${searched_text}`)
       .then((data) => {
@@ -50,7 +67,8 @@ const AllProperties = () => {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => setSearchLoading(false));
   };
 
   if (!properties.length) {
@@ -112,7 +130,13 @@ const AllProperties = () => {
               placeholder="Search"
             />
           </label>
-          <button className="btn btn-secondary text-base-100">Search</button>
+          <ButtonLoader 
+            loading={searchLoading}
+            loadingText="Searching..."
+            className="btn-secondary text-base-100"
+          >
+            Search
+          </ButtonLoader>
         </form>
 
         <div>

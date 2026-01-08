@@ -4,6 +4,7 @@ import useAxios from "../CustomHooks/useAxios";
 import { IoLocation } from "react-icons/io5";
 import toast from "react-hot-toast";
 import { FaStar, FaUser } from "react-icons/fa";
+import { PropertyDetailsSkeleton } from "../Components/Shared";
 
 const PropertyDetails = () => {
   const [singleProperty, setSingleProperty] = useState({});
@@ -32,12 +33,9 @@ const PropertyDetails = () => {
       .catch((err) => toast.error(err.message));
   }, [axiosInstance, id]);
 
-  if (loading)
-    return (
-      <div className="flex justify-center items-center text-primary min-h-screen">
-        <span className="loading loading-spinner loading-xl"></span>
-      </div>
-    );
+  if (loading) {
+    return <PropertyDetailsSkeleton />;
+  }
 
   return (
     <>

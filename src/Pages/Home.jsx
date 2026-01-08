@@ -12,17 +12,22 @@ import FeaturedProperties from "../Components/FeaturedProperties/FeaturedPropert
 import { useQuery } from "@tanstack/react-query";
 import WhyUs from "../Components/WhyChooseUs/WhyUs";
 import LatestProperties from "../Components/LatestProperties/LatestProperties";
+import { LoadingSpinner } from "../Components/Shared";
 
 const Home = () => {
   const axiosInstance = useAxios();
 
-  const { data: properties = [] } = useQuery({
+  const { data: properties = [], isLoading } = useQuery({
     queryKey: ["latest-properties"],
     queryFn: async () => {
       const res = await axiosInstance.get("/latest-properties");
       return res.data;
     },
   });
+
+  if (isLoading) {
+    return <LoadingSpinner fullScreen message="Loading HomeNest..." />;
+  }
 
   return (
     <>
@@ -38,7 +43,7 @@ const Home = () => {
         <Companies />
       </section>
 
-      <FeaturedProperties properties={properties} />
+      <FeaturedProperties properties={properties} isLoading={isLoading} />
 
       <WhyUs />
 

@@ -1,48 +1,53 @@
 import React from "react";
-import { BsTwitterX } from "react-icons/bs";
-import { FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
-import { ImFacebook } from "react-icons/im";
-
-
-
-
-
-
-
-
-
-
-
+import AgentImage from "./Shared/AgentImage";
+import { Link } from "react-router";
 
 const AgentCard = ({ agent }) => {
+  const {
+    _id,
+    agentProfile,
+    propertiesRented,
+    propertiesSold,
+    agentName,
+    designation,
+  } = agent || {};
   return (
-    <div className="bg-white p-2 shadow-lg rounded">
-      <div className="grid grid-cols-12">
-        <div className="col-span-10">
-          <img src={agent.image} className="rounded" alt="" />
-        </div>
-
-        <div className="col-span-2 flex flex-col items-center justify-around text-gray-600">
-          <p className="">
-            <BsTwitterX className="ag-icons" />
-          </p>
-          <p>
-            <ImFacebook className="ag-icons" />
-          </p>
-          <p>
-            <FaLinkedinIn className="ag-icons" />
-          </p>
-          <p>
-            <FaInstagram className="ag-icons" />
-          </p>
-          <p>
-            <FaYoutube className="ag-icons" />
-          </p>
-        </div>
+    <Link
+      to={`/agent/${_id}`}
+      className="space-y-8 text-center px-15 py-5 border-2 border-gray-200 shadow-md"
+    >
+      <div className="px-14">
+        <AgentImage image={agentProfile} />
       </div>
-      <h3 className="text-subtitle my-2 text-center font-extrabold! text-gray-700">{agent.name}</h3>
-      <p className="text-center text-sm! text-gray-500">{agent.designation}</p>
-    </div>
+
+      <div className="space-y-1.5">
+        <h3 className="text-2xl font-bold text-gray-700">{agentName}</h3>
+        <h5 className="font-extrabold text-lg text-blue-600">{designation}</h5>
+      </div>
+
+      <div className="px-6 py-2.5 border-2 border-gray-300 rounded-md flex items-center justify-between">
+        <span>
+          <h4 className="text-black font-bold text-xl">{propertiesRented}</h4>
+          <p>For Rent</p>
+        </span>
+
+        <div className="h-12 w-0.5 bg-gray-400"></div>
+
+        <span>
+          <h4 className="text-black font-bold text-xl">{propertiesSold}</h4>
+          <p>For Sale</p>
+        </span>
+      </div>
+
+      <div className="space-x-3">
+        <button className="btn btn-outline outline-gray-300 text-blue-500">
+          Email
+        </button>
+        <button className="btn btn-outline outline-gray-300 text-blue-500">
+          WhatsApp
+        </button>
+      </div>
+    </Link>
   );
 };
 

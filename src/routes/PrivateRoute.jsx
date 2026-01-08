@@ -1,17 +1,15 @@
 import React, { use } from "react";
 import { Navigate, useLocation } from "react-router";
 import { AuthContext } from "../Contexts/AuthContext";
+import { LoadingSpinner } from "../Components/Shared";
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = use(AuthContext);
   const location = useLocation();
 
-  if (loading)
-    return (
-      <div className="flex justify-center items-center text-primary min-h-screen">
-        <span className="loading loading-spinner loading-xl"></span>
-      </div>
-    );
+  if (loading) {
+    return <LoadingSpinner fullScreen message="Authenticating..." />;
+  }
 
   if (user) return children;
 

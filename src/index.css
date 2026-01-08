@@ -103,7 +103,7 @@
 }
 
 a.active {
-  @apply text-primary;
+  @apply text-primary bg-blue-200/50;
 }
 
 .svg-underline {

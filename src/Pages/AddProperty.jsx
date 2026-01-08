@@ -4,10 +4,12 @@ import useAxios from "../CustomHooks/useAxios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import { ButtonLoader } from "../Components/Shared";
 
 const AddProperty = () => {
   const [category, setCategory] = useState(null);
   const [error, setError] = useState("");
+  const [submitLoading, setSubmitLoading] = useState(false);
   const { user } = use(AuthContext);
   const axiosInstance = useAxios();
 
@@ -48,6 +50,7 @@ const AddProperty = () => {
 
     console.log(newProperty);
 
+    setSubmitLoading(true);
     axiosInstance
       .post("/add-property", newProperty)
       .then((data) => {
@@ -61,9 +64,12 @@ const AddProperty = () => {
           });
 
           e.target.reset();
+          setCategory(null);
+          setError("");
         }
       })
-      .catch((error) => toast.error(error.message));
+      .catch((error) => toast.error(error.message))
+      .finally(() => setSubmitLoading(false));
   };
 
   return (
@@ -222,9 +228,13 @@ const AddProperty = () => {
           </div>
 
           <div className="mt-5 flex items-center justify-center">
-            <button className="btn btn-primary btn-wide text-base-100 text-lg lg:text-2xl lg:py-8">
+            <ButtonLoader
+              loading={submitLoading}
+              loadingText="Adding Property..."
+              className="btn-primary btn-wide text-base-100 text-lg lg:text-2xl lg:py-8"
+            >
               Add Property Now
-            </button>
+            </ButtonLoader>
           </div>
         </form>
       </div>
