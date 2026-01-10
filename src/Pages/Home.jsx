@@ -13,6 +13,8 @@ import { useQuery } from "@tanstack/react-query";
 import WhyUs from "../Components/WhyChooseUs/WhyUs";
 import LatestProperties from "../Components/LatestProperties/LatestProperties";
 import { LoadingSpinner } from "../Components/Shared";
+import PageTransition from "../Components/PageTransition";
+import FadeInSection from "../Components/AnimatedComponents/FadeInSection";
 
 const Home = () => {
   const axiosInstance = useAxios();
@@ -30,40 +32,35 @@ const Home = () => {
   }
 
   return (
-    <>
+    <PageTransition>
       <section>
         <BannerSlider />
       </section>
 
-      <section className="mb-24">
+      <FadeInSection className="mb-24">
         <Stats />
-      </section>
+      </FadeInSection>
 
-      <section className="mt-7 lg:mt-10 w-full p-3 lg:p-0 lg:w-10/12 lg:mx-auto flex justify-around">
+      <FadeInSection className="mt-7 lg:mt-10 w-full p-3 lg:p-0 lg:w-10/12 lg:mx-auto flex justify-around">
         <Companies />
-      </section>
+      </FadeInSection>
 
       <FeaturedProperties properties={properties} isLoading={isLoading} />
 
-      <WhyUs />
+      <FadeInSection>
+        <WhyUs />
+      </FadeInSection>
 
       <LatestProperties />
 
-     
-
-     
-      {/* <section className="my-18 p-3 lg:p-10 why-choose text-base-200">
-        <WhyChooseUs />
-      </section> */}
-
-      <section className="w-11/12 lg:w-[96%] mx-auto">
+      <FadeInSection className="w-11/12 lg:w-[96%] mx-auto">
         <MeetOurAgents />
-      </section>
+      </FadeInSection>
 
-      <section className="my-18 container mx-auto p-2 md:p-0">
+      <FadeInSection className="my-18 container mx-auto p-2 md:p-0">
         <CalculateCost />
-      </section>
-    </>
+      </FadeInSection>
+    </PageTransition>
   );
 };
 

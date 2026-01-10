@@ -3,6 +3,9 @@ import useAxios from "../CustomHooks/useAxios";
 import PropertyCard from "../Components/PropertyCard";
 import { Link } from "react-router";
 import { LoadingSpinner, PropertyCardSkeleton, GridSkeleton, ButtonLoader } from "../Components/Shared";
+import StaggeredGrid from "../Components/AnimatedComponents/StaggeredGrid";
+import FadeInSection from "../Components/AnimatedComponents/FadeInSection";
+import PageTransition from "../Components/PageTransition";
 
 const AllProperties = () => {
   const [loading, setLoading] = useState(false);
@@ -93,70 +96,79 @@ const AllProperties = () => {
   }
 
   return (
-    <section className="p-5 min-h-screen bg-base-200 container mx-auto">
-      <h1 className="my-3 text-h1 text-center">
-        Explore <span className="text-primary">All Properties</span>
-      </h1>
-      <p className="text-caption text-gray-600 text-center">
-        Browse our complete collection of homes, apartments, and commercial
-        spaces — carefully curated to match every lifestyle, need, and
-        investment goal.
-      </p>
+    <PageTransition>
+      <section className="p-5 min-h-screen bg-base-200 container mx-auto">
+        <FadeInSection className="text-center mb-8">
+          <h1 className="my-3 text-h1">
+            Explore <span className="text-primary">All Properties</span>
+          </h1>
+          <p className="text-caption text-gray-600">
+            Browse our complete collection of homes, apartments, and commercial
+            spaces — carefully curated to match every lifestyle, need, and
+            investment goal.
+          </p>
+        </FadeInSection>
 
-      <div className="mt-5 flex items-center justify-between">
-        <form onSubmit={handleSearch} className="flex items-center gap-1.5">
-          <label className="input">
-            <svg
-              className="h-[1em] opacity-50"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <g
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-                fill="none"
-                stroke="currentColor"
+        <FadeInSection delay={0.2} className="mt-5 flex items-center justify-between">
+          <form onSubmit={handleSearch} className="flex items-center gap-1.5">
+            <label className="input">
+              <svg
+                className="h-[1em] opacity-50"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
               >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </g>
-            </svg>
-            <input
-              type="search"
-              name="search"
-              required
-              className="outline-0!"
-              placeholder="Search"
-            />
-          </label>
-          <ButtonLoader 
-            loading={searchLoading}
-            loadingText="Searching..."
-            className="btn-secondary text-base-100"
-          >
-            Search
-          </ButtonLoader>
-        </form>
+                <g
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  strokeWidth="2.5"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.3-4.3"></path>
+                </g>
+              </svg>
+              <input
+                type="search"
+                name="search"
+                required
+                className="outline-0!"
+                placeholder="Search"
+              />
+            </label>
+            <ButtonLoader 
+              loading={searchLoading}
+              loadingText="Searching..."
+              className="btn-primary text-base-100"
+            >
+              Search
+            </ButtonLoader>
+          </form>
 
-        <div>
-          <select
-            onChange={(e) => setSort(e.target.value)}
-            className="px-4 py-2 bg-base-100 outline-0 border-2 border-base-300 rounded-2xl"
-          >
-            <option value="">Sort By:</option>
-            <option value="1">Price Low to High</option>
-            <option value="-1">Price High to Low</option>
-          </select>
-        </div>
-      </div>
+          <div>
+            <select
+              onChange={(e) => setSort(e.target.value)}
+              className="px-4 py-2 bg-base-100 outline-0 border-2 border-base-300 rounded-2xl"
+            >
+              <option value="">Sort By:</option>
+              <option value="1">Price Low to High</option>
+              <option value="-1">Price High to Low</option>
+            </select>
+          </div>
+        </FadeInSection>
 
-      <div className="my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {properties.map((property) => (
-          <PropertyCard key={property._id} property={property} />
-        ))}
-      </div>
-    </section>
+        <StaggeredGrid 
+          className="my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+          stagger={0.1}
+          duration={0.6}
+          distance={40}
+        >
+          {properties.map((property) => (
+            <PropertyCard key={property._id} property={property} />
+          ))}
+        </StaggeredGrid>
+      </section>
+    </PageTransition>
   );
 };
 

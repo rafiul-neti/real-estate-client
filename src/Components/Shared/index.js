@@ -15,3 +15,10 @@ export { default as AboveHeading } from './AboveHeading';
 export { default as Heading } from './Heading';
 export { default as ListingCard } from './ListingCard';
 export { default as AgentImage } from './AgentImage';
+
+// Animation Components
+export { default as ScrollReveal } from '../AnimatedComponents/ScrollReveal';
+export { default as StaggeredGrid } from '../AnimatedComponents/StaggeredGrid';
+export { default as AnimatedButton } from '../AnimatedComponents/AnimatedButton';
+export { default as FadeInSection } from '../AnimatedComponents/FadeInSection';
+export { default as AnimatedCard } from '../AnimatedComponents/AnimatedCard';

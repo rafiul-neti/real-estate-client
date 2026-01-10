@@ -24,30 +24,34 @@ const Navbar = () => {
           All Properties
         </NavLink>
       </li>
-      <li>
-        <NavLink
-          to={`/add-property`}
-          className={`font-semibold text-base tracking-wide`}
-        >
-          Add Properties
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to={`/my-properties`}
-          className={`font-semibold text-base  tracking-wide`}
-        >
-          My Properties
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to={`/my-ratings`}
-          className={`font-semibold text-base tracking-wide`}
-        >
-          My Ratings
-        </NavLink>
-      </li>
+      {user && (
+        <>
+          <li>
+            <NavLink
+              to={`/add-property`}
+              className={`font-semibold text-base tracking-wide`}
+            >
+              Add Properties
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/my-properties`}
+              className={`font-semibold text-base  tracking-wide`}
+            >
+              My Properties
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/my-ratings`}
+              className={`font-semibold text-base tracking-wide`}
+            >
+              My Ratings
+            </NavLink>
+          </li>
+        </>
+      )}
       <li>
         <NavLink
           to={`/agents`}

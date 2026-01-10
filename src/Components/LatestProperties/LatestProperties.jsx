@@ -7,6 +7,9 @@ import LatestPropertyCard from "../LatestPropertyCard";
 import { Link } from "react-router";
 import { FaArrowRight } from "react-icons/fa";
 import { LatestPropertyCardSkeleton, SectionSkeleton } from "../Shared";
+import FadeInSection from "../AnimatedComponents/FadeInSection";
+import StaggeredGrid from "../AnimatedComponents/StaggeredGrid";
+import AnimatedButton from "../AnimatedComponents/AnimatedButton";
 
 const LatestProperties = () => {
   const axiosInstance = useAxiosSecure();
@@ -30,25 +33,36 @@ const LatestProperties = () => {
     );
   }
   return (
-    <section className="mt-24 w-11/12 mx-auto">
-      <AboveHeading>Latest Properties</AboveHeading>
-      <Heading underlined={`Properties`}>Latest</Heading>
+    <FadeInSection className="mt-24 w-11/12 mx-auto">
+      <div className="text-center mb-12">
+        <AboveHeading>Latest Properties</AboveHeading>
+        <Heading underlined={`Properties`}>Latest</Heading>
+      </div>
 
-      <div className="grid grid-cols-1 gap-7">
+      <StaggeredGrid 
+        className="grid grid-cols-1 gap-7"
+        stagger={0.15}
+        duration={0.8}
+        distance={50}
+      >
         {featuredProperties.map((property) => (
           <LatestPropertyCard key={property._id} property={property} />
         ))}
-      </div>
+      </StaggeredGrid>
 
-      <>
-        <div className="mt-14 text-center">
-          <Link to={`/all-properties`} className="btn btn-primary">
-            Browse More Properties{" "}
-            <div className="h-4 w-px bg-gray-300 m-0"></div> <FaArrowRight />
-          </Link>
-        </div>
-      </>
-    </section>
+      <FadeInSection delay={0.6} className="mt-14 text-center">
+        <Link to={`/all-properties`}>
+          <AnimatedButton 
+            variant="primary"
+            className="gap-2"
+          >
+            Browse More Properties
+            <div className="h-4 w-px bg-gray-300"></div>
+            <FaArrowRight />
+          </AnimatedButton>
+        </Link>
+      </FadeInSection>
+    </FadeInSection>
   );
 };
 

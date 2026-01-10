@@ -107,7 +107,9 @@ const Register = () => {
         setLoading(false);
         navigate("/");
       })
-      .catch((err) => toast.error(err.message))
+      .catch((err) => {
+        toast.error(err.message);
+      })
       .finally(() => setGoogleLoading(false));
   };
   return (
